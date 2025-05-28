@@ -1,0 +1,40 @@
+LXI H, 8000H
+MOV E, M       ; L1
+INX H
+MOV D, M       ; H1
+INX H
+MOV C, M       ; L2
+INX H
+MOV B, M       ; H2
+
+MVI H, 00
+MVI L, 00      ; HL = Quotient
+MVI A, 00      ; clear A
+
+DIV_LOOP:
+MOV A, D
+CMP B
+JC DONE
+JZ CHECK_LOW
+
+; D > B
+MOV A, E
+CMP C
+JC DONE
+
+CHECK_LOW:
+MOV A, E
+SUB C
+MOV E, A
+MOV A, D
+SBB B
+MOV D, A
+
+INX H          ; Increment quotient
+JMP DIV_LOOP
+
+DONE:
+SHLD 8004H     ; Store quotient (HL)
+MOV A, E
+STA 8006H      ; Store remainder LSB
+HLT
