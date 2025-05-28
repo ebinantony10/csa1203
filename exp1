@@ -1,0 +1,11 @@
+LXI H, 8000H   ; HL points to 8000H
+MOV A, M       ; Load first number from 8000H into A
+INX H          ; Point to 8001H
+ADD M          ; Add the second number to A
+STA 8002H      ; Store the result at 8002H
+MVI A, 00H     ; Clear A to store carry
+JNC NEXT       ; Jump if no carry
+MVI A, 01H     ; If carry, load 1 into A
+
+NEXT: STA 8003H ; Store carry (0 or 1) at 8003H
+HLT            ; Halt
