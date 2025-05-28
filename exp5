@@ -1,0 +1,27 @@
+LXI H, 8000H
+MOV E, M       ; L1
+INX H
+MOV D, M       ; H1
+INX H
+MOV L, M       ; L2
+INX H
+MOV H, M       ; H2
+
+MOV A, E
+ADD L          ; L1 + L2
+MOV L, A       ; Store sum LSB
+MOV A, D
+ADC H          ; H1 + H2 + carry
+MOV H, A       ; Store sum MSB
+
+STA 8005H      ; Store MSB
+MOV A, L
+STA 8004H      ; Store LSB
+
+MVI A, 00
+JNC NOCARRY
+MVI A, 01      ; Set carry flag if needed
+
+NOCARRY:
+STA 8006H
+HLT
