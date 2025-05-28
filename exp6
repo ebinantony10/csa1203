@@ -1,0 +1,27 @@
+LXI H, 8000H
+MOV E, M       ; L1
+INX H
+MOV D, M       ; H1
+INX H
+MOV L, M       ; L2
+INX H
+MOV H, M       ; H2
+
+MOV A, E
+SUB L
+MOV L, A       ; LSB of result
+MOV A, D
+SBB H
+MOV H, A       ; MSB of result
+
+STA 8005H      ; Store MSB
+MOV A, L
+STA 8004H      ; Store LSB
+
+MVI A, 00
+JNC NOBORROW
+MVI A, 01      ; Borrow occurred
+
+NOBORROW:
+STA 8006H
+HLT
