@@ -1,0 +1,21 @@
+LXI H, 8000H   ; HL = 8000H
+MOV D, M       ; D = Dividend
+INX H
+MOV E, M       ; E = Divisor
+MVI B, 00H     ; B = Quotient
+MOV A, D       ; A = Copy of Dividend
+
+DIV_LOOP:
+CMP E          ; Compare A with E (Dividend ≥ Divisor?)
+JC DONE        ; If A < E, done
+SUB E          ; A = A - E
+INR B          ; B = B + 1 (increment quotient)
+JMP DIV_LOOP   ; Repeat
+
+DONE:
+MOV C, A       ; C = Remainder (what's left in A)
+MOV A, B       ; A = Quotient
+STA 8002H      ; Store quotient at 8002H
+MOV A, C       ; A = Remainder
+STA 8003H      ; Store remainder at 8003H
+HLT
