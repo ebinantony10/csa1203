@@ -1,0 +1,26 @@
+LXI H, 8000H
+MOV E, M       ; L1
+INX H
+MOV D, M       ; H1
+INX H
+MOV C, M       ; L2
+INX H
+MOV B, M       ; H2
+
+MVI H, 00
+MVI L, 00      ; HL = 0, will store result
+
+MVI A, 00
+MOV A, C       ; Load multiplier (low byte)
+MOV R, A       ; Save in R
+
+LOOP1:
+DAD DE         ; Add multiplicand
+DCR R
+JNZ LOOP1
+
+; Store result
+SHLD 8004H     ; Store result LSB & MSB
+MVI A, 00
+STA 8006H      ; No carry handled in this simple version
+HLT
