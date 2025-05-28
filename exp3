@@ -1,0 +1,11 @@
+LXI H, 8000H   ; HL = 8000H
+MOV B, M       ; B = Multiplicand (value at 8000H)
+INX H          ; HL = 8001H
+MOV C, M       ; C = Multiplier (value at 8001H)
+MVI A, 00H     ; A = Accumulator for result (initialize to 0)
+
+LOOP: ADD B    ; Add B to A
+DCR C          ; Decrement counter (C)
+JNZ LOOP       ; If C ≠ 0, repeat
+STA 8002H      ; Store result at 8002H
+HLT            ; Halt
