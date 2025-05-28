@@ -1,0 +1,11 @@
+LXI H, 8000H   ; HL points to 8000H
+MOV A, M       ; Load value from 8000H into A
+INX H          ; Point to 8001H
+SUB M          ; Subtract value at 8001H from A
+STA 8002H      ; Store result at 8002H
+MVI A, 00H     ; Assume no borrow
+JNC NEXT       ; Jump if no carry/borrow
+MVI A, 01H     ; If borrow occurred, load 1
+
+NEXT: STA 8003H ; Store borrow at 8003H
+HLT            ; Stop
